@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using System.Diagnostics;
 
 namespace Squadron5missing
 {
@@ -33,6 +34,7 @@ namespace Squadron5missing
         //Put all foreground objects here
         ForegroundObject chair;
         ForegroundObject elevator;
+        ForegroundObject alarm;
 
         Random rand;
         //List<string> alertList = new List<string>();
@@ -42,6 +44,22 @@ namespace Squadron5missing
         Texture2D ProblemMenuBackground;
         Texture2D background;
         Texture2D menu;
+
+        RoomTab roomTab1;
+        RoomTab roomTab2;
+        RoomTab roomTab3;
+        RoomTab roomTab4;
+        RoomTab roomTab5;
+        RoomTab roomTab6;
+
+        Texture2D RoomCamera1;
+        Texture2D RoomCamera2;
+        Texture2D RoomCamera3;
+        Texture2D RoomCamera4;
+        Texture2D RoomCamera5;
+        Texture2D RoomCamera6;
+        List<Texture2D> RoomTextures;
+        List<RoomTab> RoomTabs;
 
         //Not in use remove when there is time
         Texture2D repairKnapp;
@@ -80,15 +98,19 @@ namespace Squadron5missing
             clock = new DateTime();
 
             b = new BackScroll(Content.Load<Texture2D>("space02"), Content.Load<Texture2D>("space03"), .03f);
-            background = Content.Load<Texture2D>("background01");
+            background = Content.Load<Texture2D>("room_02");
             menu = Content.Load<Texture2D>("menu_layout");
 
             chair = new ForegroundObject(Content.Load<Texture2D>("chair02"), new Vector2(762, 430), 150, 150, 2, 2, 400);
-            elevator = new ForegroundObject(Content.Load<Texture2D>("elevator_002"), new Vector2(352, 234), 500, 500, 13, 4, 100);
+            elevator = new ForegroundObject(Content.Load<Texture2D>("elevator_002"), new Vector2(352, 264), 500, 500, 13, 4, 100);
+            alarm = new ForegroundObject(Content.Load<Texture2D>("Larm"), new Vector2(GraphicsDevice.Viewport.Width - 107, 46), 300, 300, 1, 1, 10000);
 
             this.IsMouseVisible = true;
             
             base.Initialize();
+
+            RoomTabs = new List<RoomTab>();
+            RoomTextures = new List<Texture2D>();
 
             resource = new Resources(Content.Load<Texture2D>("resource_button"), new Vector2(2, 18), testFont, spriteBatch, 200, 300, 100, 3000, 100);
 
@@ -97,23 +119,47 @@ namespace Squadron5missing
             //Setting graphics settings
             graphics.PreferredBackBufferWidth = 1600;
             graphics.PreferredBackBufferHeight = 900;
-            graphics.IsFullScreen = true;
+            graphics.IsFullScreen = false;
             graphics.ApplyChanges();
             rand = new Random();
             //Initializing characters
             mechanic = new Mechanic(Content.Load<Texture2D>("Kitty Breath Blink"), new Vector2(1000, 450), RoomE.Bridge, resource, "Morgan the Mechanic", 174, 300, 9, 5, new Button(Content.Load<Texture2D>("button"), new Vector2(400, 665), Color.White, ButtonName.Eat),
                 new Button(Content.Load<Texture2D>("button"), new Vector2(850, 665), Color.White, ButtonName.Resolve), new Button(Content.Load<Texture2D>("button"), new Vector2(400, 790), Color.White, ButtonName.Heal), new Button(Content.Load<Texture2D>("button")
-                    , new Vector2(850, 790), Color.White, ButtonName.Upgrade), Content.Load<Texture2D>("Kitty Walk Left"), Content.Load<Texture2D>("Kitty Walk Right"), Content.Load<Texture2D>("Kitty Walk Back"), Content.Load<Texture2D>("Kitty Walk Front"), 5, 5, 5, 8, 5, 100, "Olaf");
+                    , new Vector2(850, 790), Color.White, ButtonName.Upgrade), Content.Load<Texture2D>("Kitty Walk Left"), 8, 3, Content.Load<Texture2D>("Kitty Walk Right"), 8, 3, Content.Load<Texture2D>("Kitty Walk Back"), 9, 3, Content.Load<Texture2D>("Kitty Walk Front"), 9, 3, 5, 5, 5, 8, 5, 100, "Olaf");
 
-            mechanic2 = new Mechanic(Content.Load<Texture2D>("Kitty Breath Blink"), new Vector2(300, 450), RoomE.Bridge, resource, "Morgan the Mechanic", 174, 300, 9, 5, new Button(Content.Load<Texture2D>("button"), new Vector2(400, 665), Color.White, ButtonName.Eat),
+            mechanic2 = new Mechanic(Content.Load<Texture2D>("idle_pose02"), new Vector2(300, 450), RoomE.Bridge, resource, "Morgan the Mechanic", 300, 300, 8, 3, new Button(Content.Load<Texture2D>("button"), new Vector2(400, 665), Color.White, ButtonName.Eat),
                 new Button(Content.Load<Texture2D>("button"), new Vector2(850, 665), Color.White, ButtonName.Resolve), new Button(Content.Load<Texture2D>("button"), new Vector2(400, 790), Color.White, ButtonName.Heal), new Button(Content.Load<Texture2D>("button")
-                    , new Vector2(850, 790), Color.White, ButtonName.Upgrade), Content.Load<Texture2D>("Kitty Walk Left"), Content.Load<Texture2D>("Kitty Walk Right"), Content.Load<Texture2D>("Kitty Walk Back"), Content.Load<Texture2D>("Kitty Walk Front"), 5, 5, 5, 5, 5, 100, "Olaf");
+                    , new Vector2(850, 790), Color.White, ButtonName.Upgrade), Content.Load<Texture2D>("walk_right_03"), 8, 3, Content.Load<Texture2D>("walk_right_03"), 8, 3, Content.Load<Texture2D>("walk_up_02"), 8, 3, Content.Load<Texture2D>("walk_up_02"), 8, 3, 5, 5, 5, 5, 5, 100, "Olaf");
 
             p = new ErrorMessage(mechanic, mechanic2);
 
             //Initializing events
             engineEvent = new EngineEvent(200, "Engine broke down", clock, "The engines Fluxual Accelerate Perperator has been damaged and needs repair");
 
+            RoomCamera1 = Content.Load<Texture2D>("button");
+            RoomCamera2 = Content.Load<Texture2D>("button");
+            RoomCamera3 = Content.Load<Texture2D>("button");
+            RoomCamera4 = Content.Load<Texture2D>("button");
+            RoomCamera5 = Content.Load<Texture2D>("button");
+            RoomCamera6 = Content.Load<Texture2D>("button");
+            RoomTextures.Add(RoomCamera1);
+            RoomTextures.Add(RoomCamera2);
+            RoomTextures.Add(RoomCamera3);
+            RoomTextures.Add(RoomCamera4);
+            RoomTextures.Add(RoomCamera5);
+            RoomTextures.Add(RoomCamera6);
+            roomTab1 = new RoomTab(sjukvårdsKnapp, new Vector2(1500, 50), "bridge", RoomE.Bridge, RoomTextures);
+            roomTab2 = new RoomTab(repairKnapp, new Vector2(1500, 500), "engineRoom", RoomE.EngineRoom, RoomTextures);
+            roomTab3 = new RoomTab(sjukvårdsKnapp, new Vector2(1500, 150), "cockpit", RoomE.Cockpit, RoomTextures);
+            roomTab4 = new RoomTab(sjukvårdsKnapp, new Vector2(1500, 200), "infermary", RoomE.Infirmary, RoomTextures);
+            roomTab5 = new RoomTab(sjukvårdsKnapp, new Vector2(1500, 250), "kitchen", RoomE.Kitchen, RoomTextures);
+            roomTab6 = new RoomTab(sjukvårdsKnapp, new Vector2(1500, 300), "battlestation", RoomE.Battlestation, RoomTextures);
+            RoomTabs.Add(roomTab1);
+            RoomTabs.Add(roomTab2);
+            RoomTabs.Add(roomTab3);
+            RoomTabs.Add(roomTab4);
+            RoomTabs.Add(roomTab5);
+            RoomTabs.Add(roomTab6);
             //Initializing variables
 
             maxEvents = 5;
@@ -127,6 +173,7 @@ namespace Squadron5missing
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
 
             //loads all colors
             testFont = Content.Load<SpriteFont>("TestFont");
@@ -169,6 +216,14 @@ namespace Squadron5missing
             mechanic.Update(gameTime);
             mechanic2.Update(gameTime);
 
+
+            roomTab1.Update();
+            roomTab2.Update();
+            roomTab3.Update();
+            roomTab4.Update();
+            roomTab5.Update();
+            roomTab6.Update();
+
             b.Scroll(GraphicsDevice);
 
             resource.MaxAndMinResource();
@@ -207,6 +262,11 @@ namespace Squadron5missing
                 but.Update(gameTime);
             }
 
+            if (mechanic.characterSelected) { mechanic2.characterSelected = false; }
+            if (mechanic2.characterSelected) { mechanic.characterSelected = false; }
+            
+            
+
             base.Update(gameTime);
         }
 
@@ -222,7 +282,7 @@ namespace Squadron5missing
             spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
             chair.Draw(spriteBatch);
             elevator.Draw(spriteBatch);
-
+            alarm.Draw(spriteBatch);
 
             for (int i = 0; i < ListOfEvents.StatListEvents.Count; i++)
             {
@@ -230,7 +290,7 @@ namespace Squadron5missing
                 ListOfEvents.StatListEvents[i].CurrentTime = clock;
             }
 
-            resource.Draw(spriteBatch, fontSmall);
+            resource.Draw(spriteBatch, testFont);
             //engineEvent.DrawText(spriteBatch, testFont, new Vector2(100, 700));
             mechanic.Draw(spriteBatch);
             mechanic2.Draw(spriteBatch);
@@ -253,6 +313,7 @@ namespace Squadron5missing
                 }
             }
 
+
             foreach (YesButton yes in ListOfYNButtons.ButtonList)
             {
                 yes.Draw(spriteBatch);
@@ -264,6 +325,11 @@ namespace Squadron5missing
             spriteBatch.Draw(menu, new Vector2(-2, 538), Color.White);
             mechanic.DrawText(spriteBatch, testFont);
             mechanic2.DrawText(spriteBatch, testFont);
+
+            foreach (RoomTab r in RoomTabs)
+            {
+                r.Draw(spriteBatch);
+            }
 
             spriteBatch.End();
             // TODO: Add your drawing code here

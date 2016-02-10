@@ -27,6 +27,10 @@ namespace Squadron5missing
         //properties
         public string WrenchName { get; set; }
         public Resources Resource { get; set; }
+        public Vector2 OldPos { get; set; }
+        public Texture2D OldTexture { get; set; }
+        public int OldFrames { get; set; }
+        public int OldSPR { get; set; }
 
         Direction direction = Direction.None;
         ButtonName selectedOption = ButtonName.Default;
@@ -41,18 +45,24 @@ namespace Squadron5missing
         bool healSelected = false;
 
         //contructor(s)
-        public Mechanic(Texture2D texture, Vector2 position, RoomE room, Resources resource, string name, int animWidth, int animHeight, int maxFrames, int spritesPerRow, Button button1, Button button2, Button button3, Button button4, Texture2D textureLeft, Texture2D textureRight, Texture2D textureUp, Texture2D textureDown, int intel, int perc, int stam, int con, int hand, int hunger, string wName)
-            : base(texture, position, room, name, animWidth, animHeight, maxFrames, spritesPerRow, button1, button2, button3, button4, textureLeft, textureRight, textureUp, textureDown, intel, perc, stam, con, hand, hunger)
+        public Mechanic(Texture2D texture, Vector2 position, RoomE room, Resources resource, string name, int animWidth, int animHeight, int maxFrames, int spritesPerRow, Button button1, Button button2, Button button3, Button button4, Texture2D walkLeft, int walkLeftFrames, int walkLeftSPR, Texture2D walkRight, int walkRightFrames, int walkRightSPR,
+            Texture2D walkUp, int walkUpFrames, int walkUpSPR, Texture2D walkDown, int walkDownFrames, int walkDownSPR, int intel, int perc, int stam, int con, int hand, int hunger, string wName)
+            : base(texture, position, room, name, animWidth, animHeight, maxFrames, spritesPerRow, button1, button2, button3, button4, walkLeft, walkLeftFrames, walkLeftSPR, walkRight, walkRightFrames, walkRightSPR, walkUp, walkUpFrames, walkUpSPR, walkDown, walkDownFrames, walkDownSPR, intel, perc, stam, con, hand, hunger)
         {
             this.WrenchName = wName;
             this.Resource = resource;
             this.healthPoints = (con * 2) * 10;
+            this.OldPos = position;
+            this.OldTexture = texture;
+            this.OldSPR = spritesPerRow;
+            this.OldFrames = maxFrames;
         }
 
         //method(s)
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            
 
             if (characterSelected == true && hasCreatedButtons == false)
             {
@@ -74,6 +84,7 @@ namespace Squadron5missing
                     }
                 }
             }
+
 
             if (healSelected)
             {
@@ -101,7 +112,16 @@ namespace Squadron5missing
 
             if (yesIsSelected)
             {
-                if (Position == new Vector2(400, 350))
+                if (Position == new Vector2(-500, -500))
+                {
+                    direction = Direction.None;
+                    if (Keyboard.GetState().IsKeyDown(Keys.A))
+                    {
+                        yesIsSelected = false;
+                        Position = OldPos;
+                    }
+                }
+                else if (Position == new Vector2(400, 350))
                 {
                     direction = Direction.None;
                     Position = new Vector2(-500, -500);
@@ -158,27 +178,36 @@ namespace Squadron5missing
             if (direction == Direction.Left)
             {
                 Texture = WalkLeft;
-                SpritesPerRow = 5;
-                MaxFrames = 8;
+                SpritesPerRow = WalkLeftSpritesPerRow;
+                MaxFrames = WalkLeftFrames;
             }
             else if (direction == Direction.Right)
             {
                 Texture = WalkRight;
-                SpritesPerRow = 5;
-                MaxFrames = 8;
+                SpritesPerRow = WalkRightSpritesPerRow;
+                MaxFrames = WalkRightFrames;
             }
             else if (direction == Direction.Up)
             {
                 Texture = WalkUp;
-                SpritesPerRow = 5;
-                MaxFrames = 9;
+                SpritesPerRow = WalkUpSpritesPerRow;
+                MaxFrames = WalkUpFrames;
             }
             else if (direction == Direction.Down)
             {
                 Texture = WalkDown;
-                SpritesPerRow = 5;
-                MaxFrames = 9;
+                SpritesPerRow = WalkDownSpritesPerRow;
+                MaxFrames = WalkDownFrames;
             }
+            else if (direction == Direction.None)
+            {
+                Texture = OldTexture;
+                SpritesPerRow = OldSPR;
+                MaxFrames = OldFrames;
+            }
+
+
+            
         }
 
 
