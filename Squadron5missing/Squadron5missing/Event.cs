@@ -9,10 +9,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-namespace Squadron5missing
-{
-    class Event
-    {
+namespace Squadron5missing {
+    class Event {
         //properties
 
         public DateTime ETC { get; set; }
@@ -24,8 +22,7 @@ namespace Squadron5missing
         public bool eventFinished = false;
 
         //constructor(s)
-        public Event(double timespan, string eventName, DateTime currentTime, string startText)
-        {
+        public Event(double timespan, string eventName, DateTime currentTime, string startText) {
             this.Timespan = timespan;
             this.EventName = eventName;
             this.CurrentTime = currentTime;
@@ -34,38 +31,22 @@ namespace Squadron5missing
         }
 
         //method(s)
-        public virtual void Draw(SpriteBatch spriteB,SpriteFont Font) //kanske onödig
+        public virtual void Draw(SpriteBatch spriteB, SpriteFont Font) //kanske onödig
         {
             spriteB.DrawString(Font, this.ETC.ToLongTimeString(), new Vector2(3, 62), Color.White);
             spriteB.DrawString(Font, this.CurrentTime.ToLongTimeString(), new Vector2(3, 42), Color.White);
             spriteB.DrawString(Font, this.eventFinished.ToString(), new Vector2(3, 22), Color.White);
         }
-        public virtual void DrawText(SpriteBatch spriteBatch, SpriteFont sFont, Vector2 position)
-        {
+        public virtual void DrawText(SpriteBatch spriteBatch, SpriteFont sFont, Vector2 position) {
 
             spriteBatch.DrawString(sFont, StartText, position, Color.White);
         }
 
-        public virtual void Update()
-        {
-            
-            if (ETC.CompareTo(CurrentTime) == -1)
-            {
+        public virtual void Update() {
+
+            if (ETC.CompareTo(CurrentTime) == -1) {
                 eventFinished = true;
             }
-        }
-    }
-    class SpecialEvent : Event
-    {
-        protected Event event1 { get; set; }
-        protected SpecialEvent(float timespan, string eventName, Event specialEvent) : base(timespan,eventName)
-        {
-            event1 = specialEvent;
-        }
-
-        protected void RunEvent()
-        {
-            event1.eventFinished = true;
         }
     }
 }
