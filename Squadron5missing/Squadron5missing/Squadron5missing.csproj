@@ -93,6 +93,8 @@
     <Compile Include="Resources.cs" />
     <Compile Include="Room.cs" />
     <Compile Include="RoomTab.cs" />
+    <Compile Include="SchedueldEvent.cs" />
+    <Compile Include="StaticGameHelper.cs" />
     <Compile Include="YesButtons.cs" />
   </ItemGroup>
   <ItemGroup>

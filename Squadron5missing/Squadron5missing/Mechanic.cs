@@ -31,6 +31,7 @@ namespace Squadron5missing
         public Texture2D OldTexture { get; set; }
         public int OldFrames { get; set; }
         public int OldSPR { get; set; }
+        public int ID { get; set; }
 
         Direction direction = Direction.None;
         ButtonName selectedOption = ButtonName.Default;
@@ -115,10 +116,17 @@ namespace Squadron5missing
                 if (Position == new Vector2(-500, -500))
                 {
                     direction = Direction.None;
-                    if (Keyboard.GetState().IsKeyDown(Keys.A))
+                    for (int i = 0; i < ListOfEvents.StatListEvents.Count; i++)
                     {
-                        yesIsSelected = false;
-                        Position = OldPos;
+                        if (ListOfEvents.StatListEvents[i].eventFinished == true)                  
+                        {
+                            if(ListOfEvents.StatListEvents[i].Chara.ID == this.ID)
+                            {
+                                yesIsSelected = false;
+                                Position = OldPos;
+                                ListOfEvents.StatListEvents.RemoveAt(i);
+                            }
+                        }
                     }
                 }
                 else if (Position == new Vector2(400, 350))
@@ -180,30 +188,35 @@ namespace Squadron5missing
                 Texture = WalkLeft;
                 SpritesPerRow = WalkLeftSpritesPerRow;
                 MaxFrames = WalkLeftFrames;
+                characterIdle = false;
             }
             else if (direction == Direction.Right)
             {
                 Texture = WalkRight;
                 SpritesPerRow = WalkRightSpritesPerRow;
                 MaxFrames = WalkRightFrames;
+                characterIdle = false;
             }
             else if (direction == Direction.Up)
             {
                 Texture = WalkUp;
                 SpritesPerRow = WalkUpSpritesPerRow;
                 MaxFrames = WalkUpFrames;
+                characterIdle = false;
             }
             else if (direction == Direction.Down)
             {
                 Texture = WalkDown;
                 SpritesPerRow = WalkDownSpritesPerRow;
                 MaxFrames = WalkDownFrames;
+                characterIdle = false;
             }
             else if (direction == Direction.None)
             {
                 Texture = OldTexture;
                 SpritesPerRow = OldSPR;
                 MaxFrames = OldFrames;
+                characterIdle = true;
             }
 
 
