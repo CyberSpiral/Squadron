@@ -26,8 +26,9 @@ namespace Squadron5missing
     class Character
     {
         //properties
-        protected Texture2D Texture { get; set; }
+        public Texture2D Texture { get; set; }
         public Vector2 Position { get; set; }
+        public int healthPoints { get; set; }
         public RoomE RoomV { get; set; }
         protected string CharName { get; set; }
         protected int AnimWidth { get; set; }
@@ -57,7 +58,7 @@ namespace Squadron5missing
         protected int Stamina { get; set; } //rapairs and fights
         protected int Constitution { get; set; } //not getting sick
         protected int Handyness { get; set; } //general handyness and workspeed also repairs
-        protected float Hunger { get; set; }
+        public float Hunger { get; set; }
 
         //private members
         private int frame = 0;
@@ -72,6 +73,7 @@ namespace Squadron5missing
         //boolean(s)
         public bool characterSelected = false;
         public bool characterIdle = true;
+        public bool IsDead = false;
 
         //constructor(s)
         protected Character(Texture2D texture, Vector2 position, RoomE room, string name, int animWidth, int animHeight, int maxFrames, int spritesPerRow,
@@ -114,7 +116,7 @@ namespace Squadron5missing
         //method(s) add Update and Draw functions!
         public virtual void Update(GameTime gameTime)
         {
-            if (Mouse.GetState().X > Position.X && Mouse.GetState().X < (Position.X + AnimWidth))
+            if (Mouse.GetState().X > Position.X && Mouse.GetState().X < (Position.X + 174))
             {
                 if (Mouse.GetState().Y > Position.Y && Mouse.GetState().Y < (Position.Y + AnimHeight))
                 {
@@ -137,6 +139,7 @@ namespace Squadron5missing
             {
                 gameSpeed = 10;
             }
+
 
             Hunger -= 0.005f * gameSpeed;
             if (Hunger > 100)
@@ -168,9 +171,9 @@ namespace Squadron5missing
             {
                 willAnimate = r.Next(0, 100);
             }
+
             //AnimationUpdate
 
-            Debug.WriteLine(frame);
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
@@ -183,13 +186,13 @@ namespace Squadron5missing
         {
             if (characterSelected == true)
             {
-            spriteBatch.DrawString(font, ButtonName.Eat.ToString(), new Vector2(575, 680), Color.White);
-            spriteBatch.DrawString(font, ButtonName.Resolve.ToString(), new Vector2(970, 680), Color.White);
-            spriteBatch.DrawString(font, ButtonName.Heal.ToString(), new Vector2(575, 810), Color.White);
-            spriteBatch.DrawString(font, ButtonName.Upgrade.ToString(), new Vector2(970, 810), Color.White);
+            spriteBatch.DrawString(font, ButtonName.Eat.ToString(), new Vector2(575, 700), Color.White);
+            spriteBatch.DrawString(font, ButtonName.Resolve.ToString(), new Vector2(995, 700), Color.White);
+            spriteBatch.DrawString(font, ButtonName.Heal.ToString(), new Vector2(575, 830), Color.White);
+            spriteBatch.DrawString(font, ButtonName.Upgrade.ToString(), new Vector2(995, 830), Color.White);
             }
         }
-
+        
 
     }
 }

@@ -13,7 +13,7 @@
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
     <XnaPlatform>Windows</XnaPlatform>
-    <XnaProfile>Reach</XnaProfile>
+    <XnaProfile>HiDef</XnaProfile>
     <XnaCrossPlatformGroupID>9e051ddd-5b71-48a0-9900-769b263a8586</XnaCrossPlatformGroupID>
     <XnaOutputType>Game</XnaOutputType>
     <ApplicationIcon>Game.ico</ApplicationIcon>
@@ -93,6 +93,7 @@
     <Compile Include="Resources.cs" />
     <Compile Include="Room.cs" />
     <Compile Include="RoomTab.cs" />
+    <Compile Include="ScanningEvent.cs" />
     <Compile Include="SchedueldEvent.cs" />
     <Compile Include="StaticGameHelper.cs" />
     <Compile Include="YesButtons.cs" />
