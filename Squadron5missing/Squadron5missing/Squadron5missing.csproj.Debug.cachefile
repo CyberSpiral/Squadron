@@ -3,7 +3,6 @@ Content\CsFontSmall.xnb
 Content\Repair_knapp.xnb
 Content\Mat knapp.xnb
 Content\Sjukvårds knapp.xnb
-Content\background01.xnb
 Content\placeHolder.xnb
 Content\space.xnb
 Content\space02.xnb
@@ -24,3 +23,8 @@ Content\Kitty Walk Front.xnb
 Content\button.xnb
 Content\resource_button.xnb
 Content\evenMeny.xnb
+Content\room_02.xnb
+Content\Larm.xnb
+Content\walk_up_02.xnb
+Content\walk_right_03.xnb
+Content\idle_pose02.xnb

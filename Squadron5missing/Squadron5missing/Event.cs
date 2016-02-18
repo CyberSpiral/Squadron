@@ -9,10 +9,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-namespace Squadron5missing
-{
-    class Event
-    {
+namespace Squadron5missing {
+    class Event {
         //properties
 
         public DateTime ETC { get; set; }
@@ -36,23 +34,20 @@ namespace Squadron5missing
         }
 
         //method(s)
-        public virtual void Draw(SpriteBatch spriteB,SpriteFont Font) //kanske onödig
+        public virtual void Draw(SpriteBatch spriteB, SpriteFont Font) //kanske onödig
         {
             spriteB.DrawString(Font, this.ETC.ToLongTimeString(), new Vector2(3, 62), Color.White);
             spriteB.DrawString(Font, this.CurrentTime.ToLongTimeString(), new Vector2(3, 42), Color.White);
             spriteB.DrawString(Font, this.eventFinished.ToString(), new Vector2(3, 22), Color.White);
         }
-        public virtual void DrawText(SpriteBatch spriteBatch, SpriteFont sFont, Vector2 position)
-        {
+        public virtual void DrawText(SpriteBatch spriteBatch, SpriteFont sFont, Vector2 position) {
 
             spriteBatch.DrawString(sFont, StartText, position, Color.White);
         }
 
-        public virtual void Update()
-        {
+        public virtual void Update() {
             
-            if (ETC.CompareTo(CurrentTime) == -1)
-            {
+            if (ETC.CompareTo(CurrentTime) == -1) {
                 eventFinished = true;
             }
 
